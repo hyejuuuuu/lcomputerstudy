@@ -55,7 +55,7 @@ public class Controller extends HttpServlet{
 		    	ArrayList<User> list = userService.getUsers(pagination);
 		    	
 		    	request.setAttribute("list", list);
-		    	request.setAttribute("pagination", pagination);
+		    	request.setAttribute("pagination", pagination);	// pagination 추가
 		    	
 		    	view = "user/list";
 		    	break;

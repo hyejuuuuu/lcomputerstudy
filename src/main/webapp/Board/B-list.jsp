@@ -16,11 +16,11 @@
 		margin: 40px auto	/*제목과 테이블의 띄우는*/
 	}
 	table tr th {
-		font-weight:1000; /*테이블 둘째 칸 글 굵기*/
+		font-weight:700; /*테이블 둘째 칸 글 굵기*/
 	}
 	table tr td, table tr th{
 		border:1px solid #818181; /*칸 테두리 굵기*/
-		width:700px; /*전체 칸넓이*/
+		width:200px; /*전체 칸넓이*/
 		text-align:center;
 	}
 	a{				/*페이지버튼 텍스트*/
@@ -29,9 +29,9 @@
 		font-weight:700;
 	}
 	ul{				
-		width:500px;
+		width:50px;
 		height: 50px;
-		margin: 10px auto;	/*테이블과 페이지버튼  사이 띄움*/
+		margin: 100px auto;	/*테이블과 페이지버튼  사이 띄움*/
 	}
 	li{
 		list-style: none;
@@ -48,23 +48,23 @@
 <h1>회원 목록</h1>
 	<table>
 		<tr>
-		<td colspan="10">전체 게시글 수 : ${pagination.count }</td>
-	<tr>
-		<th>NO.</th>
-		<th>제목</th>
-		<th>내용</th>
-		<th>조회수</th>
-		<th>작성자</th>
-		<th>작성일시</th>
-	</tr>
-	<c:forEach items="${list }" var="item" varStatus="status">
+			<td colspan="3">전체 게시글 수 : ${pagination.count }</td>
+		</tr>
+		<tr>
+			<th>NO.</th>
+			<th>제목</th>
+			<th>내용</th>
+			<th>조회수</th>
+			<th>작성자</th>
+			<th>작성일시</th>
+		</tr>
+		<c:forEach items="${list }" var="item" varStatus="status">
 			<tr>
-				<td><a href="board-detail.do?b_idx=${item.b_idx}">${item.rownum}</a></td>
-				<td>${item.b_idx}</td>
+				<td><a href="user-detail.do?u_idx=${item.u_idx}">${item.rownum}</a></td>
+				<td>${item.u_idx}</td>
 				<td>${item.b_tt}</td>
-				<td>${item.b_con}</td>
 				<td>${item.b_ct}</td>
-				<td>${item.b_id}</td>
+				<td>${item.u_name}</td>
 				<td>${item.b_date}</td>
 			<tr>	
 		</c:forEach>	

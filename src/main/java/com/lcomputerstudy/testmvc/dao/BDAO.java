@@ -36,13 +36,13 @@ public class BDAO {
 		try {
 			conn = DBConnection.getConnection();
 			String query = "select * from board";
+			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
 			
 			while(rs.next()) {
 				Board board = new Board();
 				board.setB_idx(rs.getInt("b_idx"));
-				board.setB_id(rs.getString("b_id"));
 				board.setB_tt(rs.getString("b_tt"));
 				board.setB_con(rs.getString("b_con"));
 				board.setB_ct(rs.getInt("b_ct"));
@@ -101,11 +101,12 @@ public class BDAO {
 		try {
 			conn = DBConnection.getConnection();
 			String query = new StringBuilder()
-					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,")
-					.append("				ta.*")
-					.append("FROM 			board ta,")
-					.append("INNER JOIN	    (SELECT @rownum := (SELECT	COUNT(*)-3+1 FROM user ta)) tb ON 1+1")
-					.append("LIMIT			3, 3")
+					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM")	
+					.append("ta.*,")	
+					.append("tb.u_name")	
+					.append("FROM 			board ta")	
+					.append("LEFT JOIN	user tb ON ta.u_idx = tb.u_idx")	
+					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-0+1 FROM board ta)) tc ON 1=1")	
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
@@ -116,7 +117,6 @@ public class BDAO {
 			while(rs.next()) {
 				Board board = new Board();
 				board.setB_idx(rs.getInt("b_idx"));
-				board.setB_id(rs.getString("b_id"));
 				board.setB_tt(rs.getString("b_tt"));
 				board.setB_con(rs.getString("b_con"));
 				board.setB_ct(rs.getInt("b_ct"));
@@ -160,7 +160,7 @@ public class BDAO {
 			}
 		}	
 	}
-
+	
 }
 
 	

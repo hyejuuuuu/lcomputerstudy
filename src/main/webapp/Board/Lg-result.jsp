@@ -46,12 +46,11 @@
 </style>
 <body>
 <div>
-${sessionScope.user } 회원 님 
+${sessionScope.board.u_name } 회원 님 
 </div>
 <div>
 	<ul>
 		<li><a href="board-list.do">게시글 목록</a></li>
-		<li><a href="exit.do">나가기</a></li>
 	</ul>
 </div>
 <body>

@@ -16,9 +16,11 @@
 		padding:10px 30px;
 		font-size:1.2rem;
 		font-weight:700;
+		text-align: center;
 	}
 	div:nth-child(2){
 		width:200px;
+		
 	}
 	div ul{
 		width:100%;

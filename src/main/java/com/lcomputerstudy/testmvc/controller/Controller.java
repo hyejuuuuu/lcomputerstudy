@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.lcomputerstudy.testmvc.service.BService;
 import com.lcomputerstudy.testmvc.service.UserService;
+import com.lcomputerstudy.testmvc.vo.Board;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
@@ -33,10 +35,14 @@ public class Controller extends HttpServlet{
 		String pw = null;
 		String idx = null;
 		HttpSession session = null;
-		command = chcekSession(request,response,command);	
+		//command = chcekSession(request,response,command);	
 		int usercount =0;
 		int page=1;
 		UserService userService = null;
+		BService bService = null;
+		Board board = null;
+		int bcount =0;
+		int page1=1;
 		
 		
 		switch (command) {
@@ -63,47 +69,85 @@ public class Controller extends HttpServlet{
 		    case "/user-insert.do":
 				view = "user/insert";
 				break;
-		case "/user-insert-process.do":
-				User user = new User();
-				user.setU_id(request.getParameter("id"));
-				user.setU_pw(request.getParameter("password"));
-				user.setU_name(request.getParameter("name"));
-				user.setU_tel(request.getParameter("tel1") + "-" + request.getParameter("tel2") + "-" + request.getParameter("tel3"));
-				user.setU_age(request.getParameter("age"));
+			case "/user-insert-process.do":
+					User user = new User();
+					user.setU_id(request.getParameter("id"));
+					user.setU_pw(request.getParameter("password"));
+					user.setU_name(request.getParameter("name"));
+					user.setU_tel(request.getParameter("tel1") + "-" + request.getParameter("tel2") + "-" + request.getParameter("tel3"));
+					user.setU_age(request.getParameter("age"));
+					
+					userService = UserService.getInstance();
+					userService.insertUser(user);
+							
+					view = "user/insert-result";
+					break;   
+					
+			case "/user-login.do":
+				view ="user/login";
+				break;
+			case "/user-login-process.do":
+				idx = request.getParameter("login_id");
+				pw = request.getParameter("login_password");
 				
 				userService = UserService.getInstance();
-				userService.insertUser(user);
-						
-				view = "user/insert-result";
-				break;   
+				user = userService.loginUser(idx,pw);
 				
-		case "/user-login.do":
-			view ="user/login";
-			break;
-		case "/user-login-process.do":
-			idx = request.getParameter("login_id");
-			pw = request.getParameter("login_password");
-			
-			userService = UserService.getInstance();
-			user = userService.loginUser(idx,pw);
-			
-			if(user != null) {
+				if(user != null) {
+					session = request.getSession();
+					session.setAttribute("user", user);
+					
+					view = "user/login-result";
+				}else {
+					view ="user/login-fail";
+				}
+				break;
+			case "/logout.do":
+				session= request.getSession();
+				session.invalidate();
+				view = "user/login";
+				break;
+			case "/access-denied.do":
+				view = "user/access-denied";
+				break;
+			case "/board-write.do":
+				view = "Board/B-rg";
+				break;
+			case "/board-write-process.do":
 				session = request.getSession();
-				session.setAttribute("user", user);
+				user = (User)session.getAttribute("user");
+				board = new Board();  //객쳇생성
+				board.setU_idx(user.getU_idx());
+				board.setB_tt(request.getParameter("title")); 
+				board.setB_con(request.getParameter("content"));
+				bService = BService.getInstance();
+				bService.writeBoard(board);	
 				
-				view = "user/login-result";
-			}else {
-				view ="user/login-fail";
-			}
-			break;
-		case "/logout.do":
-			session= request.getSession();
-			session.invalidate();
-			view = "user/login";
-			break;
-		case "/access-denied.do":
-			view = "user/access-denied";
-			break;
+				view = "Board/Rg-result";
+				break;
+			
+			case "/board-list.do":
+		    	String rePage1 = request.getParameter("page");
+		    	if(rePage1 != null) {
+		    		page = Integer.parseInt(rePage1);
+		
+		    	}
+		    	bService = BService.getInstance();
+		    	bcount = bService.getBoardsCount();
+		    	Pagination pagination1 = new Pagination();
+		    	pagination1.setCount(bcount);
+		    	pagination1.setPage(page);
+		    	pagination1.init();
+		    	ArrayList<Board> list1 = bService.getBoards(pagination1);
+		    	
+		    	request.setAttribute("list", list1);
+		    	request.setAttribute("pagination", pagination1);	// pagination 추가
+		    	
+		    	view = "Board/B-list";
+		    	break;
+				/*목록으로 가는 jsp.*/
+				
+						
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
@@ -122,6 +166,8 @@ public class Controller extends HttpServlet{
 				,"/user-edit.do"
 				,"/user-edit-process.do"
 				,"/user-logout.do"
+				,"/board-list.do"
+				,"/board-write.do"
 		};
 		
 	for(String item : authList) {

@@ -3,7 +3,6 @@ package com.lcomputerstudy.testmvc.vo;
 public class Board {
 	
 	private int b_idx;
-	private String b_id;
 	private int u_idx;
 	private String b_tt;
 	private String b_con;
@@ -18,13 +17,6 @@ public class Board {
 		this.u_idx = u_idx;
 	}
 
-	public String getB_id() {
-		return b_id;
-	}
-	
-	public void setB_id(String b_id) {
-		this.b_id = b_id;
-	}
 	
 	public String getB_tt() {
 		return b_tt;

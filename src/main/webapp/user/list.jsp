@@ -41,7 +41,7 @@
 		float: left;
 		text-align: center;
 		margin: 0 5px;
-		border-radius: 5px;
+		border-radius: 5px; 
 	}
 </style>
 <body>

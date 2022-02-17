@@ -27,6 +27,7 @@ public class Controller extends HttpServlet{
 
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		response.setContentType("text/html; charset=utf-8");
+		request.setCharacterEncoding("utf-8");
 		
 		String requestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
@@ -110,14 +111,15 @@ public class Controller extends HttpServlet{
 			case "/access-denied.do":
 				view = "user/access-denied";
 				break;
+				
 			case "/board-write.do":
 				view = "Board/B-rg";
 				break;
 			case "/board-write-process.do":
 				session = request.getSession();
-				user = (User)session.getAttribute("user");
-				board = new Board();  //객쳇생성
-				board.setU_idx(user.getU_idx());
+				board = (Board)session.getAttribute("board");
+				board = new Board();  //객체생성
+				board.setB_idx(board.getB_idx());
 				board.setB_tt(request.getParameter("title")); 
 				board.setB_con(request.getParameter("content"));
 				bService = BService.getInstance();
@@ -135,7 +137,7 @@ public class Controller extends HttpServlet{
 		    	bService = BService.getInstance();
 		    	bcount = bService.getBoardsCount();
 		    	Pagination pagination1 = new Pagination();
-		    	pagination1.setCount(bcount);
+
 		    	pagination1.setPage(page);
 		    	pagination1.init();
 		    	ArrayList<Board> list1 = bService.getBoards(pagination1);

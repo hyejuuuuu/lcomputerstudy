@@ -23,17 +23,13 @@ public class BService {
 		return service;
 	}
 	
-	public ArrayList<Board> getBoards(){
-		return dao.getBoards();
-	}
-	
 	public void writeBoard(Board board) {
 		dao.writeBoard(board);
 	}
 	
 	
 	public ArrayList<Board> getBoards(Pagination pagination){
-		return dao.getBoards();
+		return dao.getBoards(pagination);
 	}
 
 	public int getBoardsCount() {

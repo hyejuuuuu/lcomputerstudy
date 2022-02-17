@@ -26,43 +26,6 @@ public class BDAO {
 		return dao;
 	}
 	
-	public ArrayList<Board> getBoards(){
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<Board>list = null;
-		
-		
-		try {
-			conn = DBConnection.getConnection();
-			String query = "select * from board";
-			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery();
-			list = new ArrayList<Board>();
-			
-			while(rs.next()) {
-				Board board = new Board();
-				board.setB_idx(rs.getInt("b_idx"));
-				board.setB_tt(rs.getString("b_tt"));
-				board.setB_con(rs.getString("b_con"));
-				board.setB_ct(rs.getInt("b_ct"));
-				board.setB_date(rs.getInt("b_date"));
-				list.add(board);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				rs.close();
-				pstmt.close();
-				conn.close();
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return list;
-	}
-	
 	public int getBoardsCount() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -101,12 +64,13 @@ public class BDAO {
 		try {
 			conn = DBConnection.getConnection();
 			String query = new StringBuilder()
-					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM")	
-					.append("ta.*,")	
-					.append("tb.u_name")	
-					.append("FROM 			board ta")	
-					.append("LEFT JOIN	user tb ON ta.u_idx = tb.u_idx")	
-					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-0+1 FROM board ta)) tc ON 1=1")	
+					.append("SELECT 		@ROWNUM := @ROWNUM - 1 AS ROWNUM,\n")	
+					.append("ta.*,\n")	
+					.append("tb.u_name\n")	
+					.append("FROM 			board ta\n")	
+					.append("LEFT JOIN	user tb ON ta.u_idx = tb.u_idx\n")	
+					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tc ON 1=1\n")	
+ 			        .append("Limit ?,3\n")	
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
@@ -116,11 +80,13 @@ public class BDAO {
 			
 			while(rs.next()) {
 				Board board = new Board();
+				board.setRownum(rs.getInt("ROWNUM"));
+				board.setU_name(rs.getString("u_name"));
 				board.setB_idx(rs.getInt("b_idx"));
 				board.setB_tt(rs.getString("b_tt"));
 				board.setB_con(rs.getString("b_con"));
 				board.setB_ct(rs.getInt("b_ct"));
-				board.setB_date(rs.getInt("b_date"));
+				board.setB_date(rs.getString("b_date"));
 				list.add(board);
 			}
 		}catch(Exception e) {
@@ -143,11 +109,13 @@ public class BDAO {
 		
 		try {
 			conn =  DBConnection.getConnection();
-			String sql = "insert into board(u_idx,b_tt,b_con,b_ct) value(?,?,?,0)";
+			String sql = "insert into board(b_idx,b_tt,b_con,b_ct) value(?,?,?,0)";
 			pstmt= conn.prepareStatement(sql);
-			pstmt.setInt(1,board.getU_idx());
-			pstmt.setString(2,board.getB_tt());
-			pstmt.setString(3,board.getB_con());
+			pstmt.setInt   (1, board.getB_idx());
+			pstmt.setString(2, board.getB_tt());
+			pstmt.setString(3, board.getU_name());
+			pstmt.setString(4, board.getB_con());
+			pstmt.setInt   (5, board.getB_ct());
 			pstmt.executeUpdate();
 		}catch(Exception ex) {
 			System.out.println("SQLException : "+ex.getMessage());
@@ -158,7 +126,8 @@ public class BDAO {
 			}catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}	
+		}
+		
 	}
 	
 }

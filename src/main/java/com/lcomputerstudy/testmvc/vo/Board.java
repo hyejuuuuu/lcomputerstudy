@@ -7,8 +7,25 @@ public class Board {
 	private String b_tt;
 	private String b_con;
 	private int b_ct;
-	private int b_date;
+	private String b_date;
+	private int rownum;
+	private String u_name;
 	
+	public String getU_name() {
+		return u_name;
+	}
+	public void setU_name(String u_name) {
+		this.u_name= u_name;
+	}
+	
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+
 	public int getU_idx() {
 		return u_idx;
 	}
@@ -42,11 +59,11 @@ public class Board {
 		this.b_ct = b_ct;
 	}
 	
-	public int getB_date() {
+	public String getB_date() {
 		return b_date;
 	}
 	
-	public void setB_date(int b_date) {
+	public void setB_date(String b_date) {
 		this.b_date = b_date;
 	}
 

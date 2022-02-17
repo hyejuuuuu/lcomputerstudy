@@ -29,7 +29,7 @@
 		font-weight:700;
 	}
 	ul{				
-		width:50px;
+		width:500px;
 		height: 50px;
 		margin: 100px auto;	/*테이블과 페이지버튼  사이 띄움*/
 	}
@@ -45,11 +45,13 @@
 	}
 </style>
 <body>
+<%@ include file="DBconnection_B.jsp" %>
 <h1>회원 목록</h1>
 	<table>
 		<tr>
-			<td colspan="3">전체 게시글 수 : ${pagination.count }</td>
+			<td colspan="6">전체 게시글 수: ${pagination.count } </td>
 		</tr>
+		
 		<tr>
 			<th>NO.</th>
 			<th>제목</th>
@@ -60,9 +62,9 @@
 		</tr>
 		<c:forEach items="${list }" var="item" varStatus="status">
 			<tr>
-				<td><a href="user-detail.do?u_idx=${item.u_idx}">${item.rownum}</a></td>
-				<td>${item.u_idx}</td>
+				<td><a href="board-detail.do?b_idx=${item.b_idx}">${item.rownum}</a></td>
 				<td>${item.b_tt}</td>
+				<td>${item.b_con}</td>
 				<td>${item.b_ct}</td>
 				<td>${item.u_name}</td>
 				<td>${item.b_date}</td>
@@ -79,20 +81,20 @@
 				</c:when>
 			</c:choose> 
 			<c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}" step="1">
-				
-					<c:choose>
-						<c:when test="${ pagination.page eq i }">
-							
-							<li style="background-color:#ededed;">
-								<span>${i}</span>
-							</li>
-						</c:when>
-						<c:when test="${ pagination.page ne i }">
-							<li>
-								<a href="board-list.do?page=${i}">${i}</a>
-							</li>
-						</c:when>
-					</c:choose>
+				<c:choose>
+					<c:when test="${ pagination.page eq i }">
+						
+						<li style="background-color:#ededed;">
+							<span>${i}</span>
+						</li>
+					</c:when>
+					<c:when test="${ pagination.page ne i }">
+						<li>
+							<a href="board-list.do?page=${i}">${i}</a>
+						</li>
+					</c:when>
+				</c:choose>
+					
 			</c:forEach>
 			 <c:choose>
 				<c:when test="${ pagination.nextPage <= pagination.lastPage }">

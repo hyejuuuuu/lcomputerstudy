@@ -117,9 +117,9 @@ public class Controller extends HttpServlet{
 				break;
 			case "/board-write-process.do":
 				session = request.getSession();
-				board = (Board)session.getAttribute("board");
+				user = (User)session.getAttribute("user");
 				board = new Board();  //객체생성
-				board.setB_idx(board.getB_idx());
+				board.setU_idx(user.getU_idx());
 				board.setB_tt(request.getParameter("title")); 
 				board.setB_con(request.getParameter("content"));
 				bService = BService.getInstance();
@@ -137,7 +137,7 @@ public class Controller extends HttpServlet{
 		    	bService = BService.getInstance();
 		    	bcount = bService.getBoardsCount();
 		    	Pagination pagination1 = new Pagination();
-
+		    	pagination1.setCount(bcount);
 		    	pagination1.setPage(page);
 		    	pagination1.init();
 		    	ArrayList<Board> list1 = bService.getBoards(pagination1);
@@ -147,7 +147,51 @@ public class Controller extends HttpServlet{
 		    	
 		    	view = "Board/B-list";
 		    	break;
-				/*목록으로 가는 jsp.*/
+				
+			case "/board-detail.do":
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				bService = BService.getInstance();
+				board = bService.getDetail(board);
+				request.setAttribute("board", board);
+				view = "Board/Bdetail";
+				break;
+			
+			case "/board-edit.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				board.setB_tt(request.getParameter("edit_title"));
+				board.setB_con(request.getParameter("edit_content"));
+				board.setU_idx(user.getU_idx());
+				bService = BService.getInstance();
+				board = bService.getEdit(board);
+				request.setAttribute("board", board);
+				view = "Board/Bedit";
+				break;
+				
+			case "/board-edit-process.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board = new Board();  //객체생성
+				board.setU_idx(user.getU_idx());
+				board.setB_tt(request.getParameter("edit_title")); 
+				board.setB_con(request.getParameter("edit_content"));
+				bService = BService.getInstance();
+				board = bService.getEdit(board);
+				
+				view = "Board/Edit-Result";
+				break;
+				
+			case "/board-delete.do":
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				bService = BService.getInstance();
+				board = bService.getDelete(board);
+				request.setAttribute("board", board);
+				view = "Board/Bdelete";
+				
 				
 						
 		}
@@ -170,7 +214,11 @@ public class Controller extends HttpServlet{
 				,"/user-logout.do"
 				,"/board-list.do"
 				,"/board-write.do"
-		};
+				,"/board-detail.do"
+				,"/board-delete.do"
+				,"/board-edit.do"
+				
+		};/*do주소 추가하면 case문 있어야함*/
 		
 	for(String item : authList) {
 		if(item.equals(command)) {

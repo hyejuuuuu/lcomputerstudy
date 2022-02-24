@@ -45,7 +45,7 @@
 	}
 </style>
 <body>
-<%@ include file="DBconnection_B.jsp" %>
+
 <h1>회원 목록</h1>
 	<table>
 		<tr>
@@ -62,7 +62,7 @@
 		</tr>
 		<c:forEach items="${list }" var="item" varStatus="status">
 			<tr>
-				<td><a href="board-detail.do?b_idx=${item.b_idx}">${item.rownum}</a></td>
+				<td><a href="board-detail.do?b_idx=${item.b_idx}">${item.rownum} </a></td>
 				<td>${item.b_tt}</td>
 				<td>${item.b_con}</td>
 				<td>${item.b_ct}</td>

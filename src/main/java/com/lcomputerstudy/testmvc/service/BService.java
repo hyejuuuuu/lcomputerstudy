@@ -36,6 +36,25 @@ public class BService {
 		// TODO Auto-generated method stub
 		return dao.getBoardsCount();
 	}
+
+	public Board getDetail(Board board) {
+		// TODO Auto-generated method stub
+		return dao.getDetail(board);
+	}
+
+	public Board getEdit(Board board) {
+		// TODO Auto-generated method stub
+		return dao.getEdit(board);
+	}
+
+	public Board getDelete(Board board) {
+		// TODO Auto-generated method stub
+		return dao.getDelete(board);
+	}
+
+
+
+	}
 	
 
-}
+

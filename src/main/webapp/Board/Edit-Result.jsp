@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Register Result</title>
+<title>Edit-Result</title>
 </head>
 <body>
-<h1>등록 완료</h1>
+<h1>수정완료</h1>
 <a href="/lcomputerstudy/board-list.do"> 돌아가기 </a>
 </body>
 </html>

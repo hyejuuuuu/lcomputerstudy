@@ -47,8 +47,8 @@
 		%>
 		
 		<tr>
-			<td><a href ="userDetail.jsp?u_idx=<%=u_idx%>"><%=u_idx %></a></td>	
-			<td><%=u_id%></td>	
+			<td><%=u_idx %></td>	
+			<td><%=u_id  %></td>	
 			<td><%=u_name%></td>
 		<tr>
 		

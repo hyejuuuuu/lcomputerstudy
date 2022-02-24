@@ -2,11 +2,13 @@
 <%@page import="java.time.LocalDateTime"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 상세</title>
+<title>게시글 상세보기</title>
 </head>
 <style>
 	table{
@@ -33,65 +35,57 @@
 		display:inline-block;
 	}
 </style>
-
 <body>
-<%@ include file="DBconnection_B.jsp" %>
-	<h1>회원 상세페이지</h1>
+<h1>회원 목록</h1>
 	<table>
-	<%
-		String idx = request.getParameter("b_idx");
 	
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		<tr>
+			<td>NO.</td>
+			<td>${board.b_idx}</td>
+		</tr>
+		<tr>	
+			<td>작성자</td>
+			<td>${board.u_name}</td>
+		</tr>
+		<tr>	
+			<td>제목</td>
+			<td>${board.b_tt}</td>
+		</tr>
+		<tr>	
+			<td>내용</td>
+			<td>${board.b_con}</td>
+		</tr>	
+			<td>조회수</td>
+			<td>${board.b_ct}</td>
+		<tr>	
+			<td>작성일시</td>
+			<td>${board.b_date}</td>
+		</tr>
 		
-		String query = "select * from board where b_idx=?";
-		pstmt = conn.prepareStatement(query);
-		pstmt.setString(1, idx);
-		
-		rs = pstmt.executeQuery();
-		
-		while(rs.next()){
-			int b_idx     =rs.getInt("b_idx");
-			String b_tt   =rs.getString("b_tt");
-			String u_name =rs.getString("u_name");
-			String b_con  =rs.getString("b_con");
-			
-			
-			
-	%>
-	<tr>
-		<td>NO.</td>
-		<td><%=b_idx %></td>
-	</tr>
-	<tr>
-		<td>게시글 제목</td>
-		<td><%=b_tt %></td>
-	</tr>
-	<tr>
-		<td>작성자</td>
-		<td><%=u_name %></td>
-	</tr>
-	<tr>
-		<td>내용</td>
-		<td><%=b_con %></td>
-	</tr>
-
-	<tr style="height:50px;">
-		<td style="border:none;">
-			<a href="Bedit.jsp?b_idx=<%=b_idx%>" style="width:70%;font-weight:700;background-color: #818181;color:#fff;" >수정</a>
-		</td>
-		<td style="border:none;">
-			<a href="Bdelete.jsp?b_idx=<%=b_idx%>" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
-		</td>
-	</tr>
-	
-	
-	
-	<%
-		}
-	%>					
 	</table>
-<body>
+<style>
+	a {
+		text-decoration:none;
+		color:#000;
+		font-weight:700;
+		border:none;
+		cursor:pointer;
+		padding:10px;
+		display:inline-block;
+		text-align: center;
+		margin: 10px auto;
+	}
+</style>
+		
+		<td>
+		<a href="board-edit.do?b_idx=${board.b_idx }" style="width:9.5%;font-weight:700;background-color:skyblue;color:#fff;" >수정</a>
+		</td>
+		<td >
+		<a href="board-delete.do?b_idx=${board.b_idx }" style="width:9.5%;font-weight:700;background-color:red;color:#fff;">삭제</a>
+		</td>
+	</tr>
+		
+	
 
 </body>
 </html>

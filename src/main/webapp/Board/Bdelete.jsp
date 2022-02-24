@@ -7,20 +7,10 @@
 <title>게시글 삭제</title>
 </head>
 <body>
-<%@ include file="DBconnection_B.jsp" %>
-
-<%
-	String idx = request.getParameter("b_idx");	
-	System.out.println(idx);
-	
-	PreparedStatement pstmt = null;
-	
-	String query = "delete from board where b_idx=?";
-	pstmt = conn.prepareStatement(query);
-	pstmt.setString(1, idx);
-	pstmt.executeUpdate();
-%>
 	<h3>삭제 완료</h3>
+		<div>
+			<button type ="button" onclick="location.href='/lcomputerstudy/board-list.do';"> 돌아가기 </button>
+		</div>
 <script>
 setTimeout(function(){
 	window.location.href = "B-list.jsp";

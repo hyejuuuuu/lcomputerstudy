@@ -76,6 +76,19 @@
 		<td>회원 나이</td>
 		<td><%=u_age %></td>
 	</tr>
+	
+<style>
+	a {
+		text-decoration:none;
+		color:#000;
+		font-weight:700;
+		border:none;
+		cursor:pointer;
+		padding:10px;
+		display:inline-block;
+	}
+</style>
+
 	<tr style="height:50px;">
 		<td style="border:none;">
 			<a href="userEdit.jsp?u_idx=<%=u_idx%>" style="width:70%;font-weight:700;background-color: #818181;color:#fff;" >수정</a>
@@ -86,6 +99,9 @@
 	</tr>
 	
 	<%
+	rs.close();
+	pstmt.close();
+	conn.close();
 		}
 	%>					
 	</table>

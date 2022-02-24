@@ -34,8 +34,8 @@
 		 	<form action="editProcess.jsp" name="user" method="post">
 		 		<input type="hidden" name="u_idx" value="<%=u_idx%>">
 		 		<p> 아이디 : <input type ="text" name = "edit_id" value="<%=u_id %>"></p>
-		 		<p> 비밀번호 : <input type ="password" name = "edit_password" value="<%=u_password %>">
-		 		<p> 이름 : <input type ="text" name = "edit_name" value="<%=u_name %>">
+		 		<p> 비밀번호 : <input type ="password" name = "edit_password" value="<%=u_password %>"></p>
+		 		<p> 이름 : <input type ="text" name = "edit_name" value="<%=u_name %>"></p>
 		 		<p> 연락처 : <input type ="text" maxlength="4" size="4" name = "edit_tel1" value="<%=tel[0] %>">-
 		 		<p> 연락처 : <input type ="text" maxlength="4" size="4" name = "edit_tel2" value="<%=tel[1] %>">-
 		 		<p> 연락처 : <input type ="text" maxlength="4" size="4" name = "edit_tel3" value="<%=tel[2] %>">

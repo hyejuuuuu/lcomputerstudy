@@ -1,48 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>수정 값 넘겨받기</title>
+<title>edit Page</title>
 </head>
 <body>
-<%@ include file="DBconnection_B.jsp" %>
+	<h1> 게시글 수정</h1>
 
-<%
-	request.setCharacterEncoding("UTF-8");
-
-	String idx = request.getParameter("b_idx");
-	String title = request.getParameter("b_tt");
-	String content = request.getParameter("b_con");
-
-	PreparedStatement pstmt = null;
-	
-	try{
-		String sql= "UPDATE board SET b_title = ? ,b_content = ? where b_idx=?";
-		
-		pstmt = conn.prepareStatement(sql);
-		
-		pstmt.setString(1, title);
-		pstmt.setString(2, content);
-		pstmt.setString(3, idx);
-		pstmt.executeUpdate();
-		System.out.println(pstmt.toString());
-%>
-		<h3>수정 완료</h3>
-<% 
-		}catch(SQLException ex) {
-			System.out.println("SQLException : " +ex.getMessage());
-		}finally{
-			if(pstmt != null){
-				pstmt.close();
-			}
-			if(conn != null){
-				conn.close();
-			}
-		}
-%>	
-<a href = "B-list.jsp">돌아가기</a>
+		 	<form action="${path}/board-edit-process.do?" name="Bedit" method="post">
+		 		<div></div><input type="hidden" name="b_idx" value="${b_idx }"></div>
+		 		<div> 작성자 : ${sessionScope.user.u_name }</div>
+		 		<div> 제목 :</div>
+		 		 <div><input type ="text" name = "edit_title" value="${board.b_tt }"></div>
+		 		<div> 내용 :</div>
+		 		<div> <input type ="text" name = "edit_content" value="${board.b_con }"></div>
+		 		
+		 		
+		 		<div> 
+		 			  <button type ="button" onclick="location.href='/lcomputerstudy/board-list.do';"> 완료 </button>
+		 			  <button type ="button" onclick="location.href='/lcomputerstudy/board-delete.do';"> 삭제 </button>
+		 		</div>
+		 		
+		 	</form>
+		 	
 
 </body>
 </html>

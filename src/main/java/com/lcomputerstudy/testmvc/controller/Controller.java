@@ -153,18 +153,15 @@ public class Controller extends HttpServlet{
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				bService = BService.getInstance();
 				board = bService.getDetail(board);
+				bService.viewCnt(board.getB_idx());
 				request.setAttribute("board", board);
+				
 				view = "Board/Bdetail";
 				break;
 			
 			case "/board-edit.do":
-				session = request.getSession();
-				user = (User)session.getAttribute("user");
 				board = new Board();
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
-				board.setB_tt(request.getParameter("edit_title"));
-				board.setB_con(request.getParameter("edit_content"));
-				board.setU_idx(user.getU_idx());
 				bService = BService.getInstance();
 				board = bService.getEdit(board);
 				request.setAttribute("board", board);
@@ -176,21 +173,38 @@ public class Controller extends HttpServlet{
 				user = (User)session.getAttribute("user");
 				board = new Board();  //객체생성
 				board.setU_idx(user.getU_idx());
-				board.setB_tt(request.getParameter("edit_title")); 
-				board.setB_con(request.getParameter("edit_content"));
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				board.setB_tt(request.getParameter("title")); 
+				board.setB_con(request.getParameter("content"));
 				bService = BService.getInstance();
-				board = bService.getEdit(board);
+				bService.updateBoard(board);
 				
 				view = "Board/Edit-Result";
 				break;
 				
 			case "/board-delete.do":
-				board = new Board();
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board = new Board();  //객체생성
+				board.setU_idx(user.getU_idx());
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				bService = BService.getInstance();
-				board = bService.getDelete(board);
-				request.setAttribute("board", board);
+				bService.Delete(board);
+				
+				
 				view = "Board/Bdelete";
+				
+			case "/board-reply.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board = new Board();  //객체생성
+				board.setU_idx(user.getU_idx());
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				board.setB_con(request.getParameter("content"));
+				bService = BService.getInstance();
+				bService.updateBoard(board);
+				
+				view = "Board/B-rep";
 				
 				
 						
@@ -217,6 +231,8 @@ public class Controller extends HttpServlet{
 				,"/board-detail.do"
 				,"/board-delete.do"
 				,"/board-edit.do"
+				,"/board-edit-process.do"
+				,"/board-reply.do"
 				
 		};/*do주소 추가하면 case문 있어야함*/
 		

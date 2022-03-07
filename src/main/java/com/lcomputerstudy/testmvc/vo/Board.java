@@ -9,14 +9,24 @@ public class Board {
 	private int b_ct;
 	private String b_date;
 	private int rownum;
+	private User user;
 	private String u_name;
+	private int b_gr;
+	private int b_or;
+	private int b_de;
+
+	public int getB_or() {
+		return b_or;
+	}
 	
-	public String getU_name() {
-		return u_name;
+	public int getB_gr() {
+		return b_gr;
 	}
-	public void setU_name(String u_name) {
-		this.u_name= u_name;
+
+	public int getB_de() {
+		return b_de;
 	}
+	
 	
 	public int getRownum() {
 		return rownum;
@@ -74,5 +84,19 @@ public class Board {
 	
 	public int getB_idx() {
 		return b_idx;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getU_name() {
+		return u_name;
+	}
+
+	public void setU_name(String u_name) {
+		this.u_name = u_name;
 	}
 }

@@ -11,10 +11,5 @@
 		<div>
 			<button type ="button" onclick="location.href='/lcomputerstudy/board-list.do';"> 돌아가기 </button>
 		</div>
-<script>
-setTimeout(function(){
-	window.location.href = "B-list.jsp";
-</script>	
-
 </body>
 </html>

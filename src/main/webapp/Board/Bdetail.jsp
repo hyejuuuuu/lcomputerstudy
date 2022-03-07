@@ -83,6 +83,9 @@
 		<td >
 		<a href="board-delete.do?b_idx=${board.b_idx }" style="width:9.5%;font-weight:700;background-color:red;color:#fff;">삭제</a>
 		</td>
+		<td>
+		<a href="board-Reply.do?b_idx=${board.b_idx }" style="whidth:13%;font-weight:700;background-color:grey;color:#fff;">댓글작성</a>
+		</td>
 	</tr>
 		
 	

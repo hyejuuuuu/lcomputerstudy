@@ -47,14 +47,26 @@ public class BService {
 		return dao.getEdit(board);
 	}
 
-	public Board getDelete(Board board) {
+	public void Delete(Board board) {
 		// TODO Auto-generated method stub
-		return dao.getDelete(board);
+		dao.Delete(board);
+	}
+
+	public void updateBoard(Board board) {
+		dao.updateBoard(board);
+	}
+	
+	public void viewCnt(int b_idx ) {
+		dao.viewCnt(b_idx);
+	}
+	
+	public Board getReply(Board board) {
+		return dao.getReply(board);
 	}
 
 
 
-	}
+}
 	
 
 

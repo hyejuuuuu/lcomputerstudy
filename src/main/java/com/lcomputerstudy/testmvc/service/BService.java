@@ -51,18 +51,22 @@ public class BService {
 		// TODO Auto-generated method stub
 		dao.Delete(board);
 	}
-
+	
 	public void updateBoard(Board board) {
 		dao.updateBoard(board);
+	}
+
+	public void replyBoard(Board board) {
+		dao.replyBoard(board);
 	}
 	
 	public void viewCnt(int b_idx ) {
 		dao.viewCnt(b_idx);
 	}
 	
-	public Board getReply(Board board) {
+	/*public int getReply(Board board) {
 		return dao.getReply(board);
-	}
+	}*/
 
 
 

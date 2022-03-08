@@ -113,6 +113,7 @@ public class Controller extends HttpServlet{
 				break;
 				
 			case "/board-write.do":
+				board = new Board();
 				view = "Board/B-rg";
 				break;
 			case "/board-write-process.do":
@@ -193,20 +194,42 @@ public class Controller extends HttpServlet{
 				
 				
 				view = "Board/Bdelete";
+				break;
 				
-			case "/board-reply.do":
-				session = request.getSession();
+			case "/board-Reply.do":
+				board = new Board();
+				board.setB_gr(Integer.parseInt(request.getParameter("b_gr")));
+				board.setB_or(Integer.parseInt(request.getParameter("b_or")));
+				board.setB_de(Integer.parseInt(request.getParameter("b_de")));
+				
+				
+				/*session = request.getSession();
 				user = (User)session.getAttribute("user");
-				board = new Board();  //객체생성
+				board = new Board();  
 				board.setU_idx(user.getU_idx());
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				board.setB_con(request.getParameter("content"));
 				bService = BService.getInstance();
 				bService.updateBoard(board);
+				*/
+				request.setAttribute("board", board);  /*set있어야 jsp파일로 넘어감*/
+				view = "Board/B-reply";
+				break;
+			case "/board-Reply-Process.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board = new Board();  
+				board.setU_idx(user.getU_idx());
+				board.setB_con(request.getParameter("content"));
+				board.setB_tt(request.getParameter("title"));
+				board.setB_gr(Integer.parseInt(request.getParameter("b_gr")));
+				board.setB_or(Integer.parseInt(request.getParameter("b_or")) + 1);
+				board.setB_de(Integer.parseInt(request.getParameter("b_de")) + 1);
+				bService = BService.getInstance();
+				bService.replyBoard(board);
 				
-				view = "Board/B-rep";
-				
-				
+				view = "Board/Rg-result";
+				break;
 						
 		}
 		

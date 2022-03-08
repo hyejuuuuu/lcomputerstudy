@@ -47,6 +47,11 @@
 <body>
 
 <h1>회원 목록</h1>
+
+<div style="margin: 0 auto; width: 100px;">
+	<a href="board-write.do">글등록</a>
+</div>
+
 	<table>
 		<tr>
 			<td colspan="6">전체 게시글 수: ${pagination.count } </td>
@@ -71,6 +76,7 @@
 			<tr>	
 		</c:forEach>	
 </table>
+
 	<div>
 		<ul>
 			<c:choose>

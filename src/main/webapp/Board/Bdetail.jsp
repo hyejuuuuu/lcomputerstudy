@@ -78,13 +78,13 @@
 </style>
 		
 		<td>
-		<a href="board-edit.do?b_idx=${board.b_idx }" style="width:9.5%;font-weight:700;background-color:skyblue;color:#fff;" >수정</a>
+		<a href="board-edit.do?b_idx=${board.b_idx }" style="width:5%;font-weight:700;background-color:skyblue;color:#fff;" >수정</a>
 		</td>
 		<td >
-		<a href="board-delete.do?b_idx=${board.b_idx }" style="width:9.5%;font-weight:700;background-color:red;color:#fff;">삭제</a>
+		<a href="board-delete.do?b_idx=${board.b_idx }" style="width:5%;font-weight:700;background-color:red;color:#fff;">삭제</a>
 		</td>
 		<td>
-		<a href="board-Reply.do?b_idx=${board.b_idx }" style="whidth:13%;font-weight:700;background-color:grey;color:#fff;">댓글작성</a>
+		<a href="board-Reply.do?b_idx=${board.b_idx }&b_gr=${board.b_gr}&b_or=${board.b_or}&b_de=${board.b_de}" style="whidth:5%;font-weight:800;background-color:grey;color:#fff;">답글작성</a>
 		</td>
 	</tr>
 		

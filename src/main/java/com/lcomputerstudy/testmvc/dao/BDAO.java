@@ -69,7 +69,8 @@ public class BDAO {
 					.append("tb.u_name\n")	
 					.append("FROM 			board ta\n")	
 					.append("LEFT JOIN	user tb ON ta.u_idx = tb.u_idx\n")	
-					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tc ON 1=1\n")	
+					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tc ON 1=1\n")
+					.append("order by b_idx desc\n")
  			        .append("Limit ?,3\n")	
 					.toString();
 			pstmt = conn.prepareStatement(query);
@@ -109,12 +110,18 @@ public class BDAO {
 		
 		try {
 			conn =  DBConnection.getConnection();
-			String sql = "insert into board(u_idx,b_tt,b_con,b_ct) value(?,?,?,0)";
+			String sql = "insert into board(u_idx,b_tt,b_con,b_ct,b_gr,b_or,b_de) value(?,?,?,0,0,1,0)";
 			pstmt= conn.prepareStatement(sql);
 			pstmt.setInt(1, board.getU_idx());
 			pstmt.setString(2, board.getB_tt());
 			pstmt.setString(3, board.getB_con());
 			pstmt.executeUpdate();
+			pstmt.close();
+			
+			sql = "update board set b_gr = last_insert_id() where b_idx = last_insert_id()";
+			pstmt= conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
 		}catch(Exception ex) {
 			System.out.println("SQLException : "+ex.getMessage());
 		}finally {
@@ -152,6 +159,9 @@ public class BDAO {
 				board.setB_con(rs.getString("b_con"));
 				board.setB_ct(rs.getInt("b_ct"));
 				board.setB_date(rs.getString("b_date"));
+				board.setB_gr(rs.getInt("b_gr"));
+				board.setB_or(rs.getInt("b_or"));
+				board.setB_de(rs.getInt("b_de"));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -284,19 +294,27 @@ public class BDAO {
 		}
 	}
 
-	public Board getReply(Board board) {
-		// TODO Auto-generated method stub
+	public void replyBoard(Board board) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn =  DBConnection.getConnection();
-			String sql = "insert into board(u_idx,b_tt,b_con,b_ct) value(?,?,?,0)";
+			String sql = "insert into board(u_idx,b_tt,b_con,b_ct,b_gr,b_or,b_de) value(?,?,?,0,?,?,?)";
 			pstmt= conn.prepareStatement(sql);
 			pstmt.setInt(1, board.getU_idx());
 			pstmt.setString(2, board.getB_tt());
 			pstmt.setString(3, board.getB_con());
+			pstmt.setInt(4, board.getB_gr());
+			pstmt.setInt(5, board.getB_or());
+			pstmt.setInt(6, board.getB_de());
 			pstmt.executeUpdate();
+	/*		pstmt.close();
+			
+			sql = "update board set b_or = b_or+1 where b_gr = ? and b_or >= ? and b_idx != last_insert_id()";
+			pstmt= conn.prepareStatement(sql);
+			pstmt.executeUpdate();*/
+			
 		}catch(Exception ex) {
 			System.out.println("SQLException : "+ex.getMessage());
 		}finally {
@@ -309,11 +327,14 @@ public class BDAO {
 		}
 		
 	}
-	}
 
 	
-	
-
 }
+
+
+	
+	
+
+
 
 	

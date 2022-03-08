@@ -14,6 +14,18 @@ public class Board {
 	private int b_gr;
 	private int b_or;
 	private int b_de;
+	
+	public void setB_gr(int b_gr) {
+		this.b_gr = b_gr;
+	}
+
+	public void setB_or(int b_or) {
+		this.b_or = b_or;
+	}
+
+	public void setB_de(int b_de) {
+		this.b_de = b_de;
+	}
 
 	public int getB_or() {
 		return b_or;

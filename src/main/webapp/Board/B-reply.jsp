@@ -17,6 +17,12 @@
 		<textarea name="content" rows="10" cols="100"></textarea>
 	</p>
 	<p> <input type="submit" value="등록"></p>
+	<p> <button type="button" onclick="moveList()">취소</button></p>
 </form>
+<script>
+function moveList () {
+	location.href = 'board-list.do';
+}
+</script>
 </body>
 </html>

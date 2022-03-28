@@ -70,12 +70,13 @@ public class BDAO {
 					.append("FROM 			board ta\n")	
 					.append("LEFT JOIN	user tb ON ta.u_idx = tb.u_idx\n")	
 					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tc ON 1=1\n")
-					.append("order by b_idx desc\n")
- 			        .append("Limit ?,3\n")	
+					.append("order by b_gr desc, b_or asc\n")
+ 			        .append("Limit ?,?\n")	
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
 			pstmt.setInt(2, pageNum);
+			pstmt.setInt(3, Pagination.perPage);
 			rs= pstmt.executeQuery();
 			list = new ArrayList<Board>();
 			
@@ -88,6 +89,7 @@ public class BDAO {
 				board.setB_con(rs.getString("b_con"));
 				board.setB_ct(rs.getInt("b_ct"));
 				board.setB_date(rs.getString("b_date"));
+				board.setB_de(rs.getInt("b_de"));
 				list.add(board);
 			}
 		}catch(Exception e) {
@@ -309,11 +311,13 @@ public class BDAO {
 			pstmt.setInt(5, board.getB_or());
 			pstmt.setInt(6, board.getB_de());
 			pstmt.executeUpdate();
-	/*		pstmt.close();
+			pstmt.close();
 			
 			sql = "update board set b_or = b_or+1 where b_gr = ? and b_or >= ? and b_idx != last_insert_id()";
 			pstmt= conn.prepareStatement(sql);
-			pstmt.executeUpdate();*/
+			pstmt.setInt(1, board.getB_gr());
+			pstmt.setInt(2, board.getB_or());
+			pstmt.executeUpdate();
 			
 		}catch(Exception ex) {
 			System.out.println("SQLException : "+ex.getMessage());
@@ -327,7 +331,6 @@ public class BDAO {
 		}
 		
 	}
-
 	
 }
 

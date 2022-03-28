@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.lcomputerstudy.testmvc.service.BService;
+import com.lcomputerstudy.testmvc.service.C_service;
 import com.lcomputerstudy.testmvc.service.UserService;
 import com.lcomputerstudy.testmvc.vo.Board;
+import com.lcomputerstudy.testmvc.vo.Comment;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
@@ -44,6 +46,10 @@ public class Controller extends HttpServlet{
 		Board board = null;
 		int bcount =0;
 		int page1=1;
+		C_service Cservice =null;
+		Comment comment = null;
+		
+		boolean isRedirected = false;
 		
 		
 		switch (command) {
@@ -157,9 +163,41 @@ public class Controller extends HttpServlet{
 				bService.viewCnt(board.getB_idx());
 				request.setAttribute("board", board);
 				
+				Pagination pagination2 = new Pagination();
+		    	pagination2.setCount(bcount);
+		    	pagination2.setPage(page);
+		    	pagination2.init();
+		    	Cservice = C_service.getInstance();
+				ArrayList<Comment> list2 = Cservice.getComments(pagination2);
+				
+				request.setAttribute("list", list2);
+				request.setAttribute("pagination", pagination2);
+				
+				/*comment list 를 service 를 이용해 가져온 뒤 request 에 attribute 추가하여 jsp에서 출력*/
+					
 				view = "Board/Bdetail";
 				break;
+				
+			case "/comment-write.do": /*수정중*/
+				/*댓글*/
+				
+				comment = new Comment();
 			
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_con(request.getParameter("content")); 
+				comment.setC_gr(Integer.parseInt(request.getParameter("c_gr")));
+				comment.setC_or(Integer.parseInt(request.getParameter("c_or")) + 1);
+				comment.setC_de(Integer.parseInt(request.getParameter("c_de")) + 1);
+				
+				
+				Cservice = C_service.getInstance();
+				Cservice.writereply(comment);
+				request.setAttribute("comment", comment);
+				
+				view = "board-detail.do?b_idx=" + comment.getB_idx();
+				isRedirected = true;
+				break;
+				
 			case "/board-edit.do":
 				board = new Board();
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
@@ -201,20 +239,10 @@ public class Controller extends HttpServlet{
 				board.setB_gr(Integer.parseInt(request.getParameter("b_gr")));
 				board.setB_or(Integer.parseInt(request.getParameter("b_or")));
 				board.setB_de(Integer.parseInt(request.getParameter("b_de")));
-				
-				
-				/*session = request.getSession();
-				user = (User)session.getAttribute("user");
-				board = new Board();  
-				board.setU_idx(user.getU_idx());
-				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
-				board.setB_con(request.getParameter("content"));
-				bService = BService.getInstance();
-				bService.updateBoard(board);
-				*/
 				request.setAttribute("board", board);  /*set있어야 jsp파일로 넘어감*/
 				view = "Board/B-reply";
 				break;
+				
 			case "/board-Reply-Process.do":
 				session = request.getSession();
 				user = (User)session.getAttribute("user");
@@ -229,12 +257,21 @@ public class Controller extends HttpServlet{
 				bService.replyBoard(board);
 				
 				view = "Board/Rg-result";
+				
 				break;
+			
+			
+			
+				
 						
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
-		rd.forward(request, response);
+		if (isRedirected) {
+			response.sendRedirect(view);
+		} else {
+			RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
+			rd.forward(request, response);
+		}
 	}
 	
 	

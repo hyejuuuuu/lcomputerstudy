@@ -64,10 +64,6 @@ public class BService {
 		dao.viewCnt(b_idx);
 	}
 	
-	/*public int getReply(Board board) {
-		return dao.getReply(board);
-	}*/
-
 
 
 }

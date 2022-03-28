@@ -87,8 +87,24 @@
 		<a href="board-Reply.do?b_idx=${board.b_idx }&b_gr=${board.b_gr}&b_or=${board.b_or}&b_de=${board.b_de}" style="whidth:5%;font-weight:800;background-color:grey;color:#fff;">답글작성</a>
 		</td>
 	</tr>
-		
 	
+/***댓글****///
+<div class="comment">
+
+		<form action="comment-write.do" method ="POST" name ="comment">
+			<div class="w3-border w3-padding">댓글 작성</div>	
+			
+				<textarea name="content" rows="5" cols="50" >댓글 작성하기</textarea>	
+				<input type="hidden" name="b_idx" value="${comment.b_idx}">
+				<input type="hidden" name="b_gr" value="${comment.c_gr}">
+				<input type="hidden" name="b_or" value="${comment.c_or}">
+				<input type="hidden" name="b_de" value="${comment.c_de}">
+					
+					<button type="submit" value="등록" >등록하기</button>
+			</div>
+		</form>	
+			
+
 
 </body>
 </html>

@@ -68,14 +68,19 @@
 		<c:forEach items="${list }" var="item" varStatus="status">
 			<tr>
 				<td><a href="board-detail.do?b_idx=${item.b_idx}">${item.rownum} </a></td>
-				<td>${item.b_tt}</td>
+				<td style="text-align: left;"><c:forEach var="j" begin="1" end="${item.b_de}">ㄴ</c:forEach>${item.b_tt}</td>
 				<td>${item.b_con}</td>
 				<td>${item.b_ct}</td>
 				<td>${item.u_name}</td>
 				<td>${item.b_date}</td>
 			<tr>	
-		</c:forEach>	
+			
+			
+		</c:forEach>
+		
+			
 </table>
+
 
 	<div>
 		<ul>
@@ -111,5 +116,7 @@
 			</c:choose> 
 		</ul>			
 	</div>
+	
+
 </body>	
 </html>

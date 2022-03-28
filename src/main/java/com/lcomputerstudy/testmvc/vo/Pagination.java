@@ -1,7 +1,5 @@
 package com.lcomputerstudy.testmvc.vo;
 
-import com.lcomputerstudy.testmvc.service.UserService;
-
 public class Pagination {
 	int count;
 	int page;
@@ -11,8 +9,8 @@ public class Pagination {
 	int lastPage;
 	int prevPage;
 	int nextPage;
-	public static final int pageUnit=5;
-	public static final int perPage=3;
+	public static final int pageUnit=3;
+	public static final int perPage=5;
 	
 	public Pagination() {
 		

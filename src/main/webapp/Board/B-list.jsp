@@ -7,13 +7,15 @@
 <meta charset="UTF-8">
 <title>게시글 목록</title>
 </head>
+
 <style> 
 	h1{
 		text-align: center;
 	}
+	
 	table{
 		border-collapse: collapse;  
-		margin: 40px auto	/*제목과 테이블의 띄우는*/
+		margin: 50px auto;	/*제목과 테이블의 띄우는*/
 	}
 	table tr th {
 		font-weight:700; /*테이블 둘째 칸 글 굵기*/
@@ -29,9 +31,9 @@
 		font-weight:700;
 	}
 	ul{				
-		width:500px;
+		width:250px;
 		height: 50px;
-		margin: 100px auto;	/*테이블과 페이지버튼  사이 띄움*/
+		margin: 50px auto;	/*테이블과 페이지버튼  사이 띄움*/
 	}
 	li{
 		list-style: none;
@@ -44,13 +46,27 @@
 		border-radius: 5px; /*페이지버튼 모양 둥글게*/
 	}
 </style>
+
 <body>
 
-<h1>회원 목록</h1>
-
-<div style="margin: 0 auto; width: 100px;">
-	<a href="board-write.do">글등록</a>
+<h1>게시글 목록</h1>
+<!-- 검색기능 수정중 -->
+<div style="margin: 0 auto;  width: 100px; margin-bottom:20px">
+	<a href="board-write.do" >글등록</a>
 </div>
+
+<form action="board-search.do" method="get" >
+	<div style= "text-align:center;" class="search">
+		<select name="keyword">
+			<option  value="title">제목</option>
+			<option value="content">내용</option>
+			<option  value="${user.u_name}">작성자</option>
+		</select>
+		<input type="text" name="searchword" placeholder="검색어를 입력하세요" value="${param.k }">
+		<input type="submit" name="search" value="검색">
+	</div>
+	
+</form>
 
 	<table>
 		<tr>

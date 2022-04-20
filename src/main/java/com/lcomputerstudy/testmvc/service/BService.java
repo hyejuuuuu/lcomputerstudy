@@ -31,6 +31,10 @@ public class BService {
 	public ArrayList<Board> getBoards(Pagination pagination){
 		return dao.getBoards(pagination);
 	}
+	public ArrayList<Board> getBoards(Board board){
+		return dao.getBoards(board);
+	}
+
 
 	public int getBoardsCount() {
 		// TODO Auto-generated method stub

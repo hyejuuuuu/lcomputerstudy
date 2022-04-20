@@ -16,8 +16,8 @@
 	<p> 내용 : 
 		<textarea name="content" rows="10" cols="100"></textarea>
 	</p>
-	<p> <input type="submit" value="등록"></p>
-	<p> <button type="button" onclick="moveList()">취소</button></p>
+	<input type="submit" value="등록">
+	<button type="button" onclick="moveList()">취소</button>
 </form>
 <script>
 function moveList () {

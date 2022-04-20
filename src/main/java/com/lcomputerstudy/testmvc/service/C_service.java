@@ -26,12 +26,28 @@ public class C_service {
 	public void writereply(Comment comment) {
 		dao.writereply(comment);
 	}
-	public ArrayList<Comment> getComments(Pagination pagination){
-		return dao.getComments(pagination);
+	public ArrayList<Comment> getComments(Pagination pagination, Board board){
+		return dao.getComments(pagination, board);
+	}
+	public ArrayList<Comment> getComments(Board board ){
+		return dao.getComments(board);
 	}
 
 	public int getCommentsCount() {
 		// TODO Auto-generated method stub
 		return dao.getCommentsCount();
+	}
+	public void commentReply(Comment comment) {
+		// TODO Auto-generated method stub
+		dao.commentReply(comment);
+	}
+	public void commentDelete(Comment comment) {
+		// TODO Auto-generated method stub
+		dao.commentDelete(comment);
+	}
+	
+	public void commentEdit(Comment comment) {
+		// TODO Auto-generated method stub
+		dao.commentEdit(comment);
 	}
 }

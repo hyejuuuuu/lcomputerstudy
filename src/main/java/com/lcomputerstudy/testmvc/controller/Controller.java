@@ -150,10 +150,40 @@ public class Controller extends HttpServlet{
 		    	ArrayList<Board> list1 = bService.getBoards(pagination1);
 		    	
 		    	request.setAttribute("list", list1);
-		    	request.setAttribute("pagination", pagination1);	// pagination 추가
+		    	request.setAttribute("pagination", pagination1);	
 		    	
 		    	view = "Board/B-list";
 		    	break;
+		    	
+			case "/board-search.do":/*검색부분*/
+				String rePage2 = request.getParameter("page");
+		    	if(rePage2 != null) {
+		    		page = Integer.parseInt(rePage2);
+		    	}
+		    	bService = BService.getInstance();
+		    	bcount = bService.getBoardsCount();
+		    	Pagination pagination3 = new Pagination();
+		    	pagination3.setCount(bcount);
+		    	pagination3.setPage(page);
+		    	pagination3.init();
+		    	ArrayList<Board> list3 = bService.getBoards(board);
+		    	
+		    	session = request.getSession();
+				user = (User)session.getAttribute("user");
+				board = new Board();  
+				
+				board.setU_idx(user.getU_idx());
+				board.setB_tt(request.getParameter("title"));
+				board.setB_con(request.getParameter("content"));
+				
+				
+				
+				request.setAttribute("list", list3);
+				request.setAttribute("board", board);
+				request.setAttribute("pagination", pagination3);
+				
+				view = "Board/B-list";
+				break;
 				
 			case "/board-detail.do":
 				board = new Board();
@@ -161,16 +191,16 @@ public class Controller extends HttpServlet{
 				bService = BService.getInstance();
 				board = bService.getDetail(board);
 				bService.viewCnt(board.getB_idx());
-				request.setAttribute("board", board);
 				
 				Pagination pagination2 = new Pagination();
 		    	pagination2.setCount(bcount);
 		    	pagination2.setPage(page);
 		    	pagination2.init();
 		    	Cservice = C_service.getInstance();
-				ArrayList<Comment> list2 = Cservice.getComments(pagination2);
+				ArrayList<Comment> list2 = Cservice.getComments(pagination2, board);
 				
-				request.setAttribute("list", list2);
+				request.setAttribute("board", board);
+				request.setAttribute("commentList", list2);
 				request.setAttribute("pagination", pagination2);
 				
 				/*comment list 를 service 를 이용해 가져온 뒤 request 에 attribute 추가하여 jsp에서 출력*/
@@ -178,24 +208,137 @@ public class Controller extends HttpServlet{
 				view = "Board/Bdetail";
 				break;
 				
-			case "/comment-write.do": /*수정중*/
-				/*댓글*/
+		
+			case "/comment-Reply-Process.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user"); 
 				
-				comment = new Comment();
-			
+				comment = new Comment(); 
+				
 				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
-				comment.setC_con(request.getParameter("content")); 
+				comment.setC_con(request.getParameter("content"));
+				comment.setU_name(request.getParameter("u_name"));
 				comment.setC_gr(Integer.parseInt(request.getParameter("c_gr")));
 				comment.setC_or(Integer.parseInt(request.getParameter("c_or")) + 1);
 				comment.setC_de(Integer.parseInt(request.getParameter("c_de")) + 1);
-				
-				
 				Cservice = C_service.getInstance();
-				Cservice.writereply(comment);
-				request.setAttribute("comment", comment);
+				comment.setU_idx(user.getU_idx());
+				Cservice.commentReply(comment);
 				
 				view = "board-detail.do?b_idx=" + comment.getB_idx();
 				isRedirected = true;
+				break;
+				
+			case "/aj-comment-reply-process.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				comment = new Comment(); 
+				
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_con(request.getParameter("c_con"));
+				comment.setC_gr(Integer.parseInt(request.getParameter("c_gr")));
+				comment.setC_or(Integer.parseInt(request.getParameter("c_or")) + 1);
+				comment.setC_de(Integer.parseInt(request.getParameter("c_de")) + 1);
+				Cservice = C_service.getInstance();
+				comment.setU_idx(user.getU_idx());
+				Cservice.commentReply(comment);
+				
+				ArrayList<Comment> list5 = Cservice.getComments(board);
+				request.setAttribute("commentList", list5);  /*새로운리스트뿌려주기*/
+				request.setAttribute("board", board); /*코멘트리스트에서 어떤객체를 쓰고있는지 보고 */
+				
+				
+				view = "ajax/comment-list";
+				break;
+				
+			case "/comment-delete.do": /*댓글삭제*/
+				comment = new Comment();
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				Cservice = C_service.getInstance();
+				Cservice.commentDelete(comment);
+				
+				view = "board-detail.do?b_idx=" + comment.getB_idx();
+				isRedirected = true;
+				break;
+				
+			case "/aj-comment-delete.do": 
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				comment = new Comment();
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				Cservice = C_service.getInstance();
+				Cservice.commentDelete(comment);
+				
+				ArrayList<Comment> list7 = Cservice.getComments(board);
+				request.setAttribute("commentList", list7);
+				request.setAttribute("board", board);
+				request.setAttribute("comment", comment);
+				
+				view = "ajax/comment-list";
+				
+				break;
+				
+				
+				
+			case "/comment-edit.do": /*댓글수정*/
+				comment = new Comment();  
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setC_con(request.getParameter("content"));
+				Cservice = C_service.getInstance();
+				Cservice.commentEdit(comment);
+				
+				view = "board-detail.do?b_idx=" + comment.getB_idx();
+				isRedirected = true;
+				break;
+				
+			case "/aj-comment-edit.do": 
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				comment = new Comment();  
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_idx(Integer.parseInt(request.getParameter("c_idx")));
+				comment.setC_con(request.getParameter("c_con"));
+				Cservice = C_service.getInstance();
+				Cservice.commentEdit(comment);
+				
+				ArrayList<Comment> list6 = Cservice.getComments(board);
+				request.setAttribute("commentList", list6);
+				request.setAttribute("comment", comment);
+				request.setAttribute("board", board);
+				view="ajax/comment-list";
+				
+				
+				break;
+				
+			case "/aj-comment-write.do": 
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				/*댓글*/
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				
+				comment = new Comment();
+				comment.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				comment.setC_con(request.getParameter("c_con"));
+				comment.setU_idx(user.getU_idx());
+				Cservice = C_service.getInstance();
+				Cservice.writereply(comment);
+				
+		    	Cservice = C_service.getInstance();
+				ArrayList<Comment> list4 = Cservice.getComments(board);
+				request.setAttribute("commentList", list4);
+				request.setAttribute("board", board);
+				
+				view = "ajax/comment-list";
 				break;
 				
 			case "/board-edit.do":
@@ -233,6 +376,8 @@ public class Controller extends HttpServlet{
 				
 				view = "Board/Bdelete";
 				break;
+				
+			
 				
 			case "/board-Reply.do":
 				board = new Board();
@@ -291,8 +436,10 @@ public class Controller extends HttpServlet{
 				,"/board-detail.do"
 				,"/board-delete.do"
 				,"/board-edit.do"
-				,"/board-edit-process.do"
+				,"/comment-edit.do"
 				,"/board-reply.do"
+				,"/comment-delete.do"
+				,"/comment-reply-process.do"
 				
 		};/*do주소 추가하면 case문 있어야함*/
 		

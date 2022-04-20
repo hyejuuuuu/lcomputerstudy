@@ -330,6 +330,16 @@ public class BDAO {
 			}
 		}
 		
+	}/*수정중*/
+	public ArrayList<Board> getBoards(Board board){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet ps = null;
+		ArrayList<Board> list = null;
+		
+		try {
+			
+		}
 	}
 	
 }

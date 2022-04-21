@@ -16,6 +16,7 @@ import com.lcomputerstudy.testmvc.service.UserService;
 import com.lcomputerstudy.testmvc.vo.Board;
 import com.lcomputerstudy.testmvc.vo.Comment;
 import com.lcomputerstudy.testmvc.vo.Pagination;
+import com.lcomputerstudy.testmvc.vo.Search;
 import com.lcomputerstudy.testmvc.vo.User;
 
 
@@ -48,6 +49,7 @@ public class Controller extends HttpServlet{
 		int page1=1;
 		C_service Cservice =null;
 		Comment comment = null;
+		Search search = null;
 		
 		boolean isRedirected = false;
 		
@@ -135,17 +137,23 @@ public class Controller extends HttpServlet{
 				view = "Board/Rg-result";
 				break;
 			
-			case "/board-list.do":
+			case "/board-list.do":/*검색부분 list부분에 추가해서 같이 움직이게 함*/
 		    	String rePage1 = request.getParameter("page");
 		    	if(rePage1 != null) {
 		    		page = Integer.parseInt(rePage1);
 		
 		    	}
+		    	
+		    	search = new Search();
+		    	search.setType(request.getParameter("type"));
+		    	search.setKeyword(request.getParameter("keyword"));
+		    	
 		    	bService = BService.getInstance();
 		    	bcount = bService.getBoardsCount();
 		    	Pagination pagination1 = new Pagination();
 		    	pagination1.setCount(bcount);
 		    	pagination1.setPage(page);
+		    	pagination1.setSearch(search);
 		    	pagination1.init();
 		    	ArrayList<Board> list1 = bService.getBoards(pagination1);
 		    	
@@ -155,36 +163,7 @@ public class Controller extends HttpServlet{
 		    	view = "Board/B-list";
 		    	break;
 		    	
-			case "/board-search.do":/*검색부분*/
-				String rePage2 = request.getParameter("page");
-		    	if(rePage2 != null) {
-		    		page = Integer.parseInt(rePage2);
-		    	}
-		    	bService = BService.getInstance();
-		    	bcount = bService.getBoardsCount();
-		    	Pagination pagination3 = new Pagination();
-		    	pagination3.setCount(bcount);
-		    	pagination3.setPage(page);
-		    	pagination3.init();
-		    	ArrayList<Board> list3 = bService.getBoards(board);
-		    	
-		    	session = request.getSession();
-				user = (User)session.getAttribute("user");
-				board = new Board();  
-				
-				board.setU_idx(user.getU_idx());
-				board.setB_tt(request.getParameter("title"));
-				board.setB_con(request.getParameter("content"));
-				
-				
-				
-				request.setAttribute("list", list3);
-				request.setAttribute("board", board);
-				request.setAttribute("pagination", pagination3);
-				
-				view = "Board/B-list";
-				break;
-				
+			
 			case "/board-detail.do":
 				board = new Board();
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));

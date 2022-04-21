@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.lcomputerstudy.testmvc.database.DBConnection;
 import com.lcomputerstudy.testmvc.vo.Pagination;
+import com.lcomputerstudy.testmvc.vo.Search;
 import com.lcomputerstudy.testmvc.vo.User;
 import com.lcomputerstudy.testmvc.vo.Board;
 
@@ -60,6 +61,12 @@ public class BDAO {
 		ResultSet rs = null;
 		ArrayList<Board> list = null;
 		int pageNum = (pagination.getPage() -1) * Pagination.perPage;
+		Search search = pagination.getSearch();
+		String where = "";
+		
+		if (search.getKeyword() != null && !(search.getKeyword().equals(""))) {
+			where = "WHERE " + search.getType() + " LIKE ? \n";
+		}
 		
 		try {
 			conn = DBConnection.getConnection();
@@ -70,13 +77,21 @@ public class BDAO {
 					.append("FROM 			board ta\n")	
 					.append("LEFT JOIN	user tb ON ta.u_idx = tb.u_idx\n")	
 					.append("INNER JOIN	(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM board ta)) tc ON 1=1\n")
+					.append(where)
 					.append("order by b_gr desc, b_or asc\n")
  			        .append("Limit ?,?\n")	
 					.toString();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, pageNum);
-			pstmt.setInt(2, pageNum);
-			pstmt.setInt(3, Pagination.perPage);
+			if (search.getKeyword() != null && !(search.getKeyword().equals(""))) {
+				pstmt.setInt(1, pageNum);
+				pstmt.setString(2, "%"+search.getKeyword()+"%");
+				pstmt.setInt(2, pageNum);
+				pstmt.setInt(3, Pagination.perPage);
+			} else {
+				pstmt.setInt(1, pageNum);
+				pstmt.setInt(2, pageNum);
+				pstmt.setInt(3, Pagination.perPage);
+			}
 			rs= pstmt.executeQuery();
 			list = new ArrayList<Board>();
 			
@@ -330,19 +345,10 @@ public class BDAO {
 			}
 		}
 		
-	}/*수정중*/
-	public ArrayList<Board> getBoards(Board board){
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet ps = null;
-		ArrayList<Board> list = null;
-		
-		try {
-			
-		}
 	}
 	
 }
+
 
 
 	

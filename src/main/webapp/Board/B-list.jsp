@@ -57,12 +57,12 @@
 
 <form action="board-search.do" method="get" >
 	<div style= "text-align:center;" class="search">
-		<select name="keyword">
+		<select name="ch1">
 			<option  value="title">제목</option>
 			<option value="content">내용</option>
 			<option  value="${user.u_name}">작성자</option>
 		</select>
-		<input type="text" name="searchword" placeholder="검색어를 입력하세요" value="${param.k }">
+		<input type="text" name="ch2" placeholder="검색어를 입력하세요" >
 		<input type="submit" name="search" value="검색">
 	</div>
 	

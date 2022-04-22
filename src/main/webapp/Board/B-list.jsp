@@ -55,18 +55,27 @@
 	<a href="board-write.do" >글등록</a>
 </div>
 
-<form action="board-search.do" method="get" >
+
+
+<form action="board-list.do" method="get" >
+	<input type="hidden" name="page" value="${pagination.page }">
+
+
 	<div style= "text-align:center;" class="search">
-		<select name="ch1">
-			<option  value="title">제목</option>
-			<option value="content">내용</option>
-			<option  value="${user.u_name}">작성자</option>
+		<select name="type" >
+			<option  value="title" ${pagination.search.type eq 'title' ? 'selected' : ''}>제목</option>
+			<option value="content" ${pagination.search.type eq 'title' ? 'selected' : ''}>내용</option>
+			<option  value="u_name" ${pagination.search.type eq 'title' ? 'selected' : ''}>작성자</option>
 		</select>
-		<input type="text" name="ch2" placeholder="검색어를 입력하세요" >
-		<input type="submit" name="search" value="검색">
-	</div>
 	
+		<input type="text"  name="keyword" placeholder="검색어를 입력하세요" value="${pagination.search.keyword }" >
+		<button type="submit">search</button>	
+			
+	
+	</div>
 </form>
+	
+
 
 	<table>
 		<tr>
@@ -117,7 +126,7 @@
 					</c:when>
 					<c:when test="${ pagination.page ne i }">
 						<li>
-							<a href="board-list.do?page=${i}">${i}</a>
+							<a href="board-list.do?page=${i}&type=${pagination.search.type}&keyword=${pagination.search.keyword}">${i}</a>
 						</li>
 					</c:when>
 				</c:choose>

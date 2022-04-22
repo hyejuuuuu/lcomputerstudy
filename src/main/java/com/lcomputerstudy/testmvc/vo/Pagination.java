@@ -1,14 +1,14 @@
 package com.lcomputerstudy.testmvc.vo;
 
 public class Pagination {
-	int count;
-	int page;
-	int pageNum;
-	int startPage;
-	int endPage;
-	int lastPage;
-	int prevPage;
-	int nextPage;
+	private int count;
+	private int page;
+	private int pageNum;
+	private int startPage;
+	private int endPage;
+	private int lastPage;
+	private int prevPage;
+	private int nextPage;
 	public static final int pageUnit=3;
 	public static final int perPage=5;
 	private Search search;
@@ -37,7 +37,7 @@ public class Pagination {
 		return page;
 	}
 	public void setPage(int page) {
-		this.page = page;
+		this.page = page < 1 ? 1 : page;
 	}
 	public int getPageNum() {
 		return pageNum;

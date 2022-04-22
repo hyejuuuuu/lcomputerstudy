@@ -157,10 +157,19 @@ public class Controller extends HttpServlet{
 		    	pagination1.init();
 		    	ArrayList<Board> list1 = bService.getBoards(pagination1);
 		    	
+		    	board = new Board();
+		    	board.setB_con(request.getParameter("content"));
+				board.setU_name(request.getParameter("u_name"));
+				board.setB_tt(request.getParameter("title")); 
+		    	
+		    	
+		    	
 		    	request.setAttribute("list", list1);
 		    	request.setAttribute("pagination", pagination1);	
-		    	
+		    	System.out.println(search.getType());
+		    	System.out.println(search.getKeyword());
 		    	view = "Board/B-list";
+		    	
 		    	break;
 		    	
 			

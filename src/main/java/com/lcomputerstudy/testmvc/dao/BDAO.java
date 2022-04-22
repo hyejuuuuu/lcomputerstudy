@@ -60,12 +60,12 @@ public class BDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Board> list = null;
-		int pageNum = (pagination.getPage() -1) * Pagination.perPage;
+		int pageNum = pagination.getPageNum();
 		Search search = pagination.getSearch();
 		String where = "";
 		
 		if (search.getKeyword() != null && !(search.getKeyword().equals(""))) {
-			where = "WHERE " + search.getType() + " LIKE ? \n";
+			where = "WHERE" + search.getType() + " LIKE ?\n";
 		}
 		
 		try {
@@ -85,8 +85,8 @@ public class BDAO {
 			if (search.getKeyword() != null && !(search.getKeyword().equals(""))) {
 				pstmt.setInt(1, pageNum);
 				pstmt.setString(2, "%"+search.getKeyword()+"%");
-				pstmt.setInt(2, pageNum);
-				pstmt.setInt(3, Pagination.perPage);
+				pstmt.setInt(3, pageNum);
+				pstmt.setInt(4, Pagination.perPage);
 			} else {
 				pstmt.setInt(1, pageNum);
 				pstmt.setInt(2, pageNum);

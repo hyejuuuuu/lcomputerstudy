@@ -43,5 +43,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return dao.getUsers(pagination);
 	}
+	
+	public void updateUser(User user) {
+		dao.updateUser(user);
+	}
 
 }

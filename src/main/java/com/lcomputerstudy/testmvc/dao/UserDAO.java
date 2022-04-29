@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.management.Query;
 
 import com.lcomputerstudy.testmvc.database.DBConnection;
+import com.lcomputerstudy.testmvc.vo.Board;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
@@ -48,6 +49,8 @@ public class UserDAO {
 				user.setU_name(rs.getString("u_name"));
 				user.setU_tel(rs.getString("u_tel"));
 				user.setU_age(rs.getString("u_age"));
+				user.setU_role(rs.getString("u_role"));
+
 				list.add(user);
 			}
 		}catch (Exception e) {
@@ -110,6 +113,7 @@ public class UserDAO {
 				user.setU_pw(rs.getString("u_pw"));
 				user.setU_id(rs.getString("u_id"));
 				user.setU_name(rs.getString("u_name"));
+				user.setU_role(rs.getString("u_role"));
 			}
 		}catch(Exception ex) {
 			System.out.println("SQLException :" +ex.getMessage());
@@ -167,7 +171,8 @@ public class UserDAO {
 					.append("				ta.*\n")
 					.append("FROM 			user ta,\n")
 					.append("				(SELECT @rownum := (SELECT	COUNT(*)-?+1 FROM user ta)) tb\n")
-					.append("LIMIT			?, 3\n")
+					.append("LIMIT			?, 5")
+					
 					.toString();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum);
@@ -183,6 +188,7 @@ public class UserDAO {
 				user.setU_name(rs.getString("u_name"));
 				user.setU_tel(rs.getString("u_tel"));
 				user.setU_age(rs.getString("u_age"));
+				user.setU_role(rs.getString("u_role"));
 				list.add(user);
 			}
 		} catch(Exception e) {
@@ -197,7 +203,33 @@ public class UserDAO {
 			}
 		}
 		return list;
-	}			
-						 
- }
+	}
+		
+		public void updateUser(User user) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			
+			try {
+				conn =  DBConnection.getConnection();
+				String sql = "update user set\n"
+						+ "u_role = ?\n"
+						+ "where u_idx = ?";
+				pstmt= conn.prepareStatement(sql);
+				pstmt.setString(1, user.getU_role());
+				pstmt.setInt(2, user.getU_idx());
+				pstmt.executeUpdate();
+			}catch(Exception ex) {
+				System.out.println("SQLException : "+ex.getMessage());
+			}finally {
+				try {
+					if(pstmt != null)pstmt.close();
+					if(conn != null)conn.close();
+				}catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+
 

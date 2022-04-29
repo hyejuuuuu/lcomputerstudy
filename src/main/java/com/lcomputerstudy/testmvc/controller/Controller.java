@@ -61,6 +61,8 @@ public class Controller extends HttpServlet{
 		    		page = Integer.parseInt(rePage);
 		
 		    	}
+		    ;
+				
 		    	userService = UserService.getInstance();
 		    	usercount = userService.getUsersCount();
 		    	Pagination pagination = new Pagination();
@@ -69,12 +71,29 @@ public class Controller extends HttpServlet{
 		    	pagination.init();
 		    	ArrayList<User> list = userService.getUsers(pagination);
 		    	
+		    	
+				
 		    	request.setAttribute("list", list);
 		    	request.setAttribute("pagination", pagination);	// pagination 추가
 		    	
 		    	view = "user/list";
+		    	
 		    	break;
 		    	
+		    case "/user-update.do":
+		    	User user1 = new User();  
+					user1.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+					user1.setU_role(request.getParameter("u_role"));
+					userService = UserService.getInstance();
+					userService.updateUser(user1);
+					
+					view = "user-list.do";
+					isRedirected = true;
+			    	
+			    	break;
+		    	
+		    
+				
 		    case "/user-insert.do":
 				view = "user/insert";
 				break;
@@ -158,22 +177,26 @@ public class Controller extends HttpServlet{
 		    	ArrayList<Board> list1 = bService.getBoards(pagination1);
 		    	
 		    	board = new Board();
-		    	board.setB_con(request.getParameter("content"));
+		    	board.setB_con(request.getParameter("b_con"));
 				board.setU_name(request.getParameter("u_name"));
-				board.setB_tt(request.getParameter("title")); 
+				board.setB_tt(request.getParameter("b_tt")); 
+				
 		    	
 		    	
 		    	
 		    	request.setAttribute("list", list1);
 		    	request.setAttribute("pagination", pagination1);	
-		    	System.out.println(search.getType());
-		    	System.out.println(search.getKeyword());
+		    /*	System.out.println(search.getType());
+		    	System.out.println(search.getKeyword());*/
 		    	view = "Board/B-list";
 		    	
 		    	break;
 		    	
 			
 			case "/board-detail.do":
+				session = request.getSession();
+				user = (User)session.getAttribute("user");
+				
 				board = new Board();
 				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
 				bService = BService.getInstance();
@@ -186,6 +209,9 @@ public class Controller extends HttpServlet{
 		    	pagination2.init();
 		    	Cservice = C_service.getInstance();
 				ArrayList<Comment> list2 = Cservice.getComments(pagination2, board);
+				
+				
+				
 				
 				request.setAttribute("board", board);
 				request.setAttribute("commentList", list2);
@@ -414,6 +440,7 @@ public class Controller extends HttpServlet{
 		String[] authList= {
 				"/user-list.do"
 				,"/user-insert.do"
+				,"/user-update.do"
 				,"/user-insert-process.do"
 				,"/user-detail.do"
 				,"/user-edit.do"

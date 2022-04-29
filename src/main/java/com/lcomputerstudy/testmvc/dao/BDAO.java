@@ -65,7 +65,7 @@ public class BDAO {
 		String where = "";
 		
 		if (search.getKeyword() != null && !(search.getKeyword().equals(""))) {
-			where = "WHERE" + search.getType() + " LIKE ?\n";
+			where = "WHERE " + search.getType() + " LIKE ?\n";
 		}
 		
 		try {
@@ -179,6 +179,7 @@ public class BDAO {
 				board.setB_gr(rs.getInt("b_gr"));
 				board.setB_or(rs.getInt("b_or"));
 				board.setB_de(rs.getInt("b_de"));
+				board.setU_idx(rs.getInt("u_idx"));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

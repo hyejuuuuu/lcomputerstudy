@@ -9,6 +9,7 @@ public class User {
 	private String u_tel;
 	private String u_age;
 	private int rownum;
+	private String u_role;
 	
 	public int getU_idx() {
 		return u_idx;
@@ -64,6 +65,14 @@ public class User {
 
 	public void setRownum(int rownum) {
 		this.rownum = rownum;
+	}
+
+	public String getU_role() {
+		return u_role;
+	}
+
+	public void setU_role(String u_role) {
+		this.u_role = u_role;
 	}
 
 	@Override

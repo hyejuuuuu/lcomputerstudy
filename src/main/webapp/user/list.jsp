@@ -32,6 +32,7 @@
 		width:500px;
 		height: 50px;
 		margin: 10px auto;
+		
 	}
 	li{
 		list-style: none;
@@ -48,17 +49,39 @@
 <h1>회원 목록</h1>
 	<table>
 		<tr>
-		<td colspan="3">전체 회원 수 : ${pagination.count }</td>
+		
+		<td colspan="5">전체 회원 수 : ${pagination.count }</td>
 	<tr>
 		<th>No</th>
 		<th>ID</th>
-		<th>이름</th>
+		<th>Nickname</th>
+		<th>Role</th>
+		<th></th>
+	
 	</tr>
 	<c:forEach items="${list }" var="item" varStatus="status">
 			<tr>
 				<td><a href="user-detail.do?u_idx=${item.u_idx}">${item.rownum}</a></td>
 				<td>${item.u_id}</td>
 				<td>${item.u_name}</td>
+				<td>${item.u_role}</td>
+				<td>
+					<c:if test="${sessionScope.user.u_role eq 'admin'}">
+						<c:choose>
+							<c:when test="${item.u_role eq 'user'}">
+								<a href="user-update.do?u_idx=${item.u_idx }&u_role=admin">관리자로변경</a>
+							</c:when>	
+							<c:when test="${item.u_role eq 'admin' }">
+								<a href="user-update.do?u_idx=${item.u_idx }&u_role=user" >사용자로변경</a>
+							</c:when>
+						
+							
+							
+						</c:choose>
+					</c:if>
+				</td>
+				
+				
 			<tr>	
 		</c:forEach>	
 </table>

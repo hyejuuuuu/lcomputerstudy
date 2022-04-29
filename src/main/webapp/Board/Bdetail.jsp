@@ -66,19 +66,30 @@
 			<td>작성일시</td>
 			<td>${board.b_date}</td>
 		</tr>
-		<tr>
-			<td>
-				<a href="board-edit.do?b_idx=${board.b_idx }" style="font-weight:700;background-color:skyblue;color:#fff;" >수정</a>
-			</td>
-			<td >
-				<a href="board-delete.do?b_idx=${board.b_idx }" style="font-weight:700;background-color:red;color:#fff;">삭제</a>
-			</td>
-			<td>
-				<a href="board-Reply.do?b_idx=${board.b_idx }&b_gr=${board.b_gr}&b_or=${board.b_or}&b_de=${board.b_de}" style="whidth:5%;font-weight:800;background-color:grey;color:#fff;">답글작성</a>
-			</td>
-		</tr>
+		</table>
 		
-	</table>
+	
+		
+		<c:if test="${board.u_idx eq sessionScope.user.u_idx}"></c:if></p>
+			
+		<div>
+		
+				<c:if test="${board.u_idx eq sessionScope.user.u_idx}">
+					<a href="board-edit.do?b_idx=${board.b_idx }"  style="font-weight:700;background-color:blue;color:#fff;">수정</a>
+				</c:if>
+				
+				<c:if test="${(sessionScope.user.u_role eq 'admin') or (board.u_idx eq sessionScope.user.u_idx) }">
+				<a href="board-delete.do?b_idx=${board.b_idx }" style="background-color:red;color:#fff;">삭제</a>
+				</c:if>
+			
+				<a href="board-Reply.do?b_idx=${board.b_idx }&b_gr=${board.b_gr}&b_or=${board.b_or}&b_de=${board.b_de}" style="whidth:5%;font-weight:800;background-color:grey;color:#fff;">답글작성</a>
+			
+			
+	
+		</div>
+	
+		
+	
 	
 	
 	
@@ -118,6 +129,7 @@
 			<div style=width:200px>
 				<div style ="text-align: left;">
 					<button type="button" class="commentReplyBtn">답변</button>
+					
 					<button type="button" class="commentEditBtn">수정</button>
 					<button type="button" class="commentDeleteBtn" c_idx="${comment.c_idx}"  b_idx="${board.b_idx}">삭제</button>			
 				</div>

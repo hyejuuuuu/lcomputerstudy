@@ -57,15 +57,19 @@
 
 
 
-<form action="board-list.do" method="get" >
+<form action="board-list.do" method="get"  >
 	<input type="hidden" name="page" value="${pagination.page }">
 
 
 	<div style= "text-align:center;" class="search">
 		<select name="type" >
-			<option  value="title" ${pagination.search.type eq 'title' ? 'selected' : ''}>제목</option>
-			<option value="content" ${pagination.search.type eq 'title' ? 'selected' : ''}>내용</option>
-			<option  value="u_name" ${pagination.search.type eq 'title' ? 'selected' : ''}>작성자</option>
+			<option  value ="b_tt" ${pagination.search.type eq 'b_tt' ? 'selected' : ''}>제목</option>
+			<option  value ="b_con" ${pagination.search.type eq 'b_con' ? 'selected' : ''}>내용</option>
+			<option  value ="u_name" ${pagination.search.type eq 'u_name' ? 'selected' : ''}>작성자</option>
+			<option value="b_tt" value="b_con"  selected>제목+내용</option> 
+				
+				
+				
 		</select>
 	
 		<input type="text"  name="keyword" placeholder="검색어를 입력하세요" value="${pagination.search.keyword }" >
